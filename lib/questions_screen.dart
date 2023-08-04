@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_quizapp/data/questions.dart';
 import 'package:flutter_quizapp/answer_button.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -11,6 +13,8 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  final currentQuestion = questions[0];
+
   @override
   Widget build(context) {
     return SizedBox(
@@ -18,27 +22,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Hehe',
-            style: TextStyle(color: Colors.white),
+          Text(
+            currentQuestion.text,
+            style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 30),
-          AnswerButton(
-            answerText: 'Answer 1',
-            onPressed: () {},
-          ),
-          AnswerButton(
-            answerText: 'Answer 2',
-            onPressed: () {},
-          ),
-          AnswerButton(
-            answerText: 'Answer 4',
-            onPressed: () {},
-          ),
-          AnswerButton(
-            answerText: 'Answer 4',
-            onPressed: () {},
-          ),
+          ...currentQuestion.answers.map((answer) {
+            return AnswerButton(answerText: answer, onPressed: () {});
+          })
         ],
       ),
     );
