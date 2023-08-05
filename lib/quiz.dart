@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quizapp/data/questions.dart';
 
 import 'package:flutter_quizapp/questions_screen.dart';
+import 'package:flutter_quizapp/result_screen.dart';
 import 'package:flutter_quizapp/start_screen.dart';
 
 class Quiz extends StatefulWidget {
@@ -13,32 +15,34 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  // Widget? activeScreen;
+  List<String> selectedAnswers = [];
   var activeScreen = 'start-screen';
-
-  // @override
-  // void initState() {
-  //   activeScreen = StartScreen(switchScreen);
-  //   super.initState();
-  // }
 
   void switchScreen() {
     setState(() {
-      // activeScreen = const QuestionScreen();
       activeScreen = 'question-screen';
     });
   }
 
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        selectedAnswers = [];
+        activeScreen = 'result-screen';
+      });
+    }
+  }
+
   @override
   Widget build(context) {
-    // final screenWidget = activeScreen == 'question-screen'
-    //     ? const QuestionScreen()
-    //     : StartScreen(switchScreen);
-
     Widget screenWidget;
 
     if (activeScreen == 'question-screen') {
-      screenWidget = const QuestionScreen();
+      screenWidget = QuestionScreen(onSelectQuestion: chooseAnswer);
+    } else if (activeScreen == 'result-screen') {
+      screenWidget = ResultScreen(chosenAnswers: selectedAnswers);
     } else {
       screenWidget = StartScreen(switchScreen);
     }
@@ -48,9 +52,10 @@ class _QuizState extends State<Quiz> {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-                colors: [Color.fromARGB(255, 19, 88, 120), Colors.blueAccent],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
+              colors: [Color.fromARGB(255, 19, 88, 120), Colors.blueAccent],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
           child: screenWidget,
         ),
