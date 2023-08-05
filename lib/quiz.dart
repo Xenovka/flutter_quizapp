@@ -24,12 +24,18 @@ class _QuizState extends State<Quiz> {
     });
   }
 
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = 'start-screen';
+    });
+  }
+
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
 
     if (selectedAnswers.length == questions.length) {
       setState(() {
-        selectedAnswers = [];
         activeScreen = 'result-screen';
       });
     }
@@ -40,9 +46,14 @@ class _QuizState extends State<Quiz> {
     Widget screenWidget;
 
     if (activeScreen == 'question-screen') {
-      screenWidget = QuestionScreen(onSelectQuestion: chooseAnswer);
+      screenWidget = QuestionScreen(
+        onSelectQuestion: chooseAnswer,
+      );
     } else if (activeScreen == 'result-screen') {
-      screenWidget = ResultScreen(chosenAnswers: selectedAnswers);
+      screenWidget = ResultScreen(
+        chosenAnswers: selectedAnswers,
+        restartQuiz: restartQuiz,
+      );
     } else {
       screenWidget = StartScreen(switchScreen);
     }
@@ -52,10 +63,9 @@ class _QuizState extends State<Quiz> {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 19, 88, 120), Colors.blueAccent],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+                colors: [Color.fromARGB(255, 19, 88, 120), Colors.blueAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
           ),
           child: screenWidget,
         ),
