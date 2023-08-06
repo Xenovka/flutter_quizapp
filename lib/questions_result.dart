@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quizapp/answer_indicator.dart';
+import 'package:flutter_quizapp/questions_answer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestionResult extends StatelessWidget {
@@ -16,26 +18,8 @@ class QuestionResult extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(40),
-                    ),
-                  ),
-                  child: Text(
-                    ((result['qIndex'] as int) + 1).toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
+                AnswerIndicator(result: result),
+                const SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,23 +32,13 @@ class QuestionResult extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        result['aCorrect'] as String,
-                        style: GoogleFonts.lato(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        result['aChosen'] as String,
-                        style: GoogleFonts.lato(
-                          color: Colors.greenAccent,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      QuestionsAnswer(
+                          text: result['aChosen'] as String,
+                          color: Colors.white),
+                      QuestionsAnswer(
+                          text: result['aCorrect'] as String,
+                          color: Colors.greenAccent),
+                      const SizedBox(height: 10)
                     ],
                   ),
                 )
